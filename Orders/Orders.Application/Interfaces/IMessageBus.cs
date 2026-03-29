@@ -1,4 +1,4 @@
-﻿namespace Order.Application.Interfaces;
+﻿namespace Orders.Application.Interfaces;
 
 public interface IMessageBus
 {

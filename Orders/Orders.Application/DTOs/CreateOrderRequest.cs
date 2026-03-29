@@ -1,4 +1,4 @@
-﻿namespace Order.Application.DTOs;
+﻿namespace Orders.Application.DTOs;
 
 public record CreateOrderRequest(
     string NomeCliente,
