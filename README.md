@@ -2,7 +2,7 @@
 
 API REST para gerenciamento de pedidos, construída com **.NET 10**, seguindo os princípios de **Clean Architecture** e **DDD (Domain-Driven Design)**.
 
-> 📚 Links e documentação de referência: [RECURSOS.md](./RECURSOS.md)
+> 📚 Links e documentação de referência: [RECURSOS.md](./RECURSOS.md) · [ARQUITETURA.md](./ARQUITETURA.md)
 
 ---
 
@@ -128,8 +128,7 @@ POST /order (API)
 Worker (consumer)
     → recebe { Id }
     → busca Order no banco
-    → order.Process()  →  Status: Pendente → Processado
-    → salva no banco
+    → OrderService.ProcessAsync()  →  Status: Pendente → Processado e salva no banc
     → BasicAck ✅  (ou BasicNack ❌ em caso de erro)
 ```
 
