@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Application.Interfaces;
 using Orders.Application.Services;
+using Orders.Infrastructure.Messaging;
 using Orders.Infrastructure.Persistence;
 using Orders.Infrastructure.Persistence.Repositories;
 
@@ -15,9 +16,13 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
+        services.AddMessaging(configuration); // Registro síncrono de serviços
+
         services.AddScoped<IOrderRepository, OrderRepository>();
 
         services.AddScoped<OrderService>();
+
+        services.AddHostedService<MessagingInitializer>(); // Inicialização assíncrona em tempo de execução
 
         return services;
     }
