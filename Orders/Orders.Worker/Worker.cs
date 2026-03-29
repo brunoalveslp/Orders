@@ -27,27 +27,35 @@ public class Worker : BackgroundService
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        var factory = new ConnectionFactory
+        try
         {
-            HostName = _configuration["RabbitMQ:HostName"] ?? "rabbitmq",
-            UserName = _configuration["RabbitMQ:UserName"] ?? "guest",
-            Password = _configuration["RabbitMQ:Password"] ?? "guest",
-        };
+            var factory = new ConnectionFactory
+            {
+                HostName = _configuration["RabbitMQ:HostName"] ?? "rabbitmq",
+                UserName = _configuration["RabbitMQ:UserName"] ?? "guest",
+                Password = _configuration["RabbitMQ:Password"] ?? "guest",
+            };
 
-        _connection = await factory.CreateConnectionAsync(cancellationToken);
-        _channel = await _connection.CreateChannelAsync(cancellationToken: cancellationToken);
+            _connection = await factory.CreateConnectionAsync(cancellationToken);
+            _channel = await _connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-        await _channel.QueueDeclareAsync(QueueName,
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            cancellationToken: cancellationToken);
+            await _channel.QueueDeclareAsync(QueueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                cancellationToken: cancellationToken);
 
-        await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: cancellationToken);
+            await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: cancellationToken);
 
-        _logger.LogInformation("Worker connected to RabbitMQ. Listening on queue '{Queue}'", QueueName);
+            _logger.LogInformation("Worker connected to RabbitMQ. Listening on queue '{Queue}'", QueueName);
 
-        await base.StartAsync(cancellationToken);
+            await base.StartAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Falha ao conectar ao RabbitMQ durante o startup. O Worker não pode iniciar.");
+            throw;
+        }
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -97,12 +105,21 @@ public class Worker : BackgroundService
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (_channel is not null)
-            await _channel.CloseAsync(cancellationToken);
+        try
+        {
+            if (_channel is not null)
+                await _channel.CloseAsync(cancellationToken);
 
-        if (_connection is not null)
-            await _connection.CloseAsync(cancellationToken);
-
-        await base.StopAsync(cancellationToken);
+            if (_connection is not null)
+                await _connection.CloseAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Erro ao fechar conexão com RabbitMQ durante o shutdown.");
+        }
+        finally
+        {
+            await base.StopAsync(cancellationToken);
+        }
     }
 }
