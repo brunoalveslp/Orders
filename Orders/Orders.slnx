@@ -3,4 +3,5 @@
   <Project Path="Orders.Application/Orders.Application.csproj" />
   <Project Path="Orders.Domain/Orders.Domain.csproj" />
   <Project Path="Orders.Infrastructure/Orders.Infrastructure.csproj" />
+  <Project Path="Orders.Worker/Orders.Worker.csproj" Id="540eacd0-e92f-4062-86fa-6236cea5cfbb" />
 </Solution>
