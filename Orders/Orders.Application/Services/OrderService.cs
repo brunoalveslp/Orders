@@ -1,4 +1,5 @@
-﻿using Orders.Application.DTOs;
+﻿using Microsoft.Extensions.Logging;
+using Orders.Application.DTOs;
 using Orders.Application.Events;
 using Orders.Application.Interfaces;
 using Orders.Application.Mappings;
@@ -12,11 +13,13 @@ public class OrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IMessageBus _bus;
+    private readonly ILogger<OrderService> _logger;
 
-    public OrderService(IOrderRepository orderRepository, IMessageBus bus)
+    public OrderService(IOrderRepository orderRepository, IMessageBus bus, ILogger<OrderService> logger)
     {
         _orderRepository = orderRepository;
         _bus = bus;
+        _logger = logger;
     }
 
     public async Task<Result<OrderResponse>> CreateAsync(CreateOrderRequest request)
@@ -28,44 +31,75 @@ public class OrderService
 
         var order = orderResult.Value;
 
-        await _orderRepository.CreateAsync(order);
-
-        await _bus.PublishAsync("orders", new OrderCreatedEvent(order.Id));
+        try
+        {
+            await _orderRepository.CreateAsync(order);
+            await _bus.PublishAsync("orders", new OrderCreatedEvent(order.Id));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao persistir ou publicar pedido {OrderId}.", order.Id);
+            return Result<OrderResponse>.Failure("Erro interno ao criar pedido.");
+        }
 
         return Result<OrderResponse>.Success(order.ToResponse());
     }
 
     public async Task<Result<OrderResponse>> GetByIdAsync(Guid id)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
-        if (order is null)
-            return Result<OrderResponse>.Failure("Order not found.");
+        try
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+            if (order is null)
+                return Result<OrderResponse>.Failure("Order not found.");
 
-        return Result<OrderResponse>.Success(order.ToResponse());
+            return Result<OrderResponse>.Success(order.ToResponse());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao buscar pedido {OrderId}.", id);
+            return Result<OrderResponse>.Failure("Erro interno ao buscar pedido.");
+        }
     }
 
     public async Task<Result<List<OrderResponse>>> GetAllAsync()
     {
-        var orders = await _orderRepository.GetAllAsync();
-        return Result<List<OrderResponse>>.Success(orders.Select(o => o.ToResponse()).ToList());
+        try
+        {
+            var orders = await _orderRepository.GetAllAsync();
+            return Result<List<OrderResponse>>.Success(orders.Select(o => o.ToResponse()).ToList());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao listar pedidos.");
+            return Result<List<OrderResponse>>.Failure("Erro interno ao listar pedidos.");
+        }
     }
 
     public async Task<Result<OrderResponse>> ProcessAsync(Guid id)
     {
-        var order = await _orderRepository.GetByIdAsync(id);
+        try
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
 
-        if (order is null)
-            return Result<OrderResponse>.Failure("Order not found.");
+            if (order is null)
+                return Result<OrderResponse>.Failure("Order not found.");
 
-        var result = order.Process();
+            var result = order.Process();
 
-        if (!result.IsSuccess)
-            return Result<OrderResponse>.Failure(result.Error);
+            if (!result.IsSuccess)
+                return Result<OrderResponse>.Failure(result.Error);
 
-        await Task.Delay(TimeSpan.FromSeconds(10));
+            await Task.Delay(TimeSpan.FromSeconds(10));
 
-        await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync(order);
 
-        return Result<OrderResponse>.Success(order.ToResponse());
+            return Result<OrderResponse>.Success(order.ToResponse());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erro ao processar pedido {OrderId}.", id);
+            return Result<OrderResponse>.Failure("Erro interno ao processar pedido.");
+        }
     }
 }
