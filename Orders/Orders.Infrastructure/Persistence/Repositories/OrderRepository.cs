@@ -26,6 +26,6 @@ public class OrderRepository : IOrderRepository
 
     public async Task<Order> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _context.Orders.FindAsync(id);
     }
 }
