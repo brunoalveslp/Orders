@@ -36,6 +36,6 @@ public class Result<T> : Result
     }
     public static new Result<T> Failure(string error)
     {
-        return new Result<T>(false, error, default(T));
+        return new Result<T>(false, error, default!);
     }
 }
