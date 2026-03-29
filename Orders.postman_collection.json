@@ -1,0 +1,304 @@
+{
+  "info": {
+    "name": "Orders API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Coleção de testes para a Orders API. Importe este arquivo no Postman para testar todos os endpoints.\n\n**Base URL:** `http://localhost:8080` (HTTP) ou `https://localhost:8081` (HTTPS)\n\n**Como usar:**\n1. Execute `docker compose up --build` na pasta raiz do projeto\n2. Importe este arquivo no Postman (File → Import)\n3. Selecione o environment `Orders API - Local`\n4. Execute `POST /order` primeiro — o `orderId` será salvo automaticamente como variável de coleção\n5. Use `GET /order/{id}` para consultar o pedido criado",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "URL base da API. Substitua por https://localhost:8081 para HTTPS."
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string",
+      "description": "ID do último pedido criado. Preenchido automaticamente pelo script do POST /order."
+    }
+  ],
+  "item": [
+    {
+      "name": "Orders",
+      "description": "Endpoints para gerenciamento de pedidos.",
+      "item": [
+        {
+          "name": "Listar todos os pedidos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["order"]
+            },
+            "description": "Retorna a lista de todos os pedidos cadastrados.\n\n**Resposta 200 OK:**\n```json\n[\n  {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"nomeCliente\": \"João Silva\",\n    \"descricao\": \"Pedido de notebook\",\n    \"valor\": 4500.00,\n    \"status\": \"Pendente\"\n  }\n]\n```"
+          },
+          "response": [
+            {
+              "name": "200 OK — Lista de pedidos",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/order",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"nomeCliente\": \"João Silva\",\n    \"descricao\": \"Pedido de notebook\",\n    \"valor\": 4500.00,\n    \"status\": \"Pendente\"\n  },\n  {\n    \"id\": \"7c9e6679-7425-40de-944b-e07fc1f90ae7\",\n    \"nomeCliente\": \"Maria Souza\",\n    \"descricao\": \"Pedido de smartphone\",\n    \"valor\": 2999.99,\n    \"status\": \"Processado\"\n  }\n]"
+            },
+            {
+              "name": "404 Not Found — Nenhum pedido encontrado",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/order",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "null"
+            }
+          ]
+        },
+        {
+          "name": "Buscar pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["order", "{{orderId}}"]
+            },
+            "description": "Retorna um pedido específico pelo seu ID (UUID).\n\nA variável `{{orderId}}` é preenchida automaticamente ao executar `POST /order`.\n\n**Resposta 200 OK:**\n```json\n{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00,\n  \"status\": \"Pendente\"\n}\n```\n\n**Resposta 404:** Pedido não encontrado."
+          },
+          "response": [
+            {
+              "name": "200 OK — Pedido encontrado",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/order/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order", "3fa85f64-5717-4562-b3fc-2c963f66afa6"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00,\n  \"status\": \"Pendente\"\n}"
+            },
+            {
+              "name": "404 Not Found — Pedido não encontrado",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/order/00000000-0000-0000-0000-000000000000",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order", "00000000-0000-0000-0000-000000000000"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "null"
+            }
+          ]
+        },
+        {
+          "name": "Criar pedido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json && json.id) {",
+                  "        pm.collectionVariables.set('orderId', json.id);",
+                  "        console.log('orderId salvo:', json.id);",
+                  "    }",
+                  "}",
+                  "",
+                  "pm.test('Status 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Resposta contém id', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('id');",
+                  "    pm.expect(json.id).to.be.a('string').and.not.empty;",
+                  "});",
+                  "",
+                  "pm.test('Status do pedido é Pendente', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('Pendente');",
+                  "});",
+                  "",
+                  "pm.test('Valor retornado corresponde ao enviado', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.valor).to.eql(4500.00);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/order",
+              "host": ["{{baseUrl}}"],
+              "path": ["order"]
+            },
+            "description": "Cria um novo pedido. O `id` retornado é salvo automaticamente na variável de coleção `{{orderId}}` para uso nas demais requisições.\n\nApós a criação, o evento `OrderCreatedEvent` é publicado na fila `orders` do RabbitMQ e o Worker processa o pedido de forma assíncrona, alterando o status de `Pendente` para `Processado`.\n\n**Body:**\n```json\n{\n  \"nomeCliente\": \"string (obrigatório)\",\n  \"descricao\": \"string (obrigatório)\",\n  \"valor\": 0.00\n}\n```\n\n**Resposta 201 Created:**\n```json\n{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00,\n  \"status\": \"Pendente\"\n}\n```"
+          },
+          "response": [
+            {
+              "name": "201 Created — Pedido criado com sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/order",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Location",
+                  "value": "{{baseUrl}}/order/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                }
+              ],
+              "body": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"nomeCliente\": \"João Silva\",\n  \"descricao\": \"Pedido de notebook\",\n  \"valor\": 4500.00,\n  \"status\": \"Pendente\"\n}"
+            },
+            {
+              "name": "400 Bad Request — Dados inválidos",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nomeCliente\": \"\",\n  \"descricao\": \"\",\n  \"valor\": -1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/order",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["order"]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "\"Dados inválidos para criação do pedido.\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
