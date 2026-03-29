@@ -14,7 +14,7 @@ COPY ["Orders.Worker/Orders.Worker.csproj", "Orders.Worker/"]
 COPY ["Orders.Application/Orders.Application.csproj", "Orders.Application/"]
 COPY ["Orders.Domain/Orders.Domain.csproj", "Orders.Domain/"]
 COPY ["Orders.Infrastructure/Orders.Infrastructure.csproj", "Orders.Infrastructure/"]
-RUN dotnet restore "./Orders.Worker/Orders.Worker.csproj"
+RUN dotnet restore "./Orders.Worker/Orders.Worker.csproj" --disable-parallel
 COPY . .
 WORKDIR "/src/Orders.Worker"
 RUN dotnet build "./Orders.Worker.csproj" -c $BUILD_CONFIGURATION -o /app/build
