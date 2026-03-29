@@ -1,4 +1,4 @@
-# 📚 Recursos e Documentação de Referência
+﻿# 📚 Recursos e Documentação de Referência
 
 Links de referência utilizados no desenvolvimento da **Orders API**.
 
@@ -30,7 +30,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 🌐 .NET & ASP.NET Core
+## 🌐 .NET e ASP.NET Core
 
 | Recurso | Link |
 |---|---|
@@ -38,7 +38,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 | Roteamento em ASP.NET Core | https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing |
 | Injeção de Dependência no .NET | https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection |
 | `IActionResult` e helpers (`Ok`, `Created`, `NotFound`) | https://learn.microsoft.com/en-us/aspnet/core/web-api/action-return-types |
-| `JsonStringEnumConverter` (serialização de enums) | https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/customize-properties |
+| `JsonStringEnumConverter` — serialização de enums | https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/customize-properties |
 | C# Records | https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record |
 | Extension Methods — C# Guide | https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods |
 
@@ -55,7 +55,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 📦 Entity Framework Core & Migrations
+## 📦 Entity Framework Core e Migrations
 
 | Recurso | Link |
 |---|---|
@@ -69,7 +69,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 🐘 PostgreSQL & Npgsql
+## 🐘 PostgreSQL e Npgsql
 
 | Recurso | Link |
 |---|---|
@@ -85,12 +85,12 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 | Recurso | Link |
 |---|---|
-| **Guia completo da API .NET** | https://www.rabbitmq.com/client-libraries/dotnet-api-guide |
+| Guia completo da API .NET | https://www.rabbitmq.com/client-libraries/dotnet-api-guide |
 | Conectando ao RabbitMQ (`ConnectionFactory`) | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#connecting |
 | Publicando mensagens (`BasicPublishAsync`) | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#publishing |
 | Consumindo mensagens (`AsyncEventingBasicConsumer`) | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#consuming-using-a-subscription |
 | Consumer Memory Safety (`.ToArray()` obrigatório) | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#consumer-memory-safety |
-| **Consumers e operações no mesmo canal** | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#consumers-and-operations-on-the-same-channel |
+| Consumers e operações no mesmo canal | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#consumers-and-operations-on-the-same-channel |
 | Ack / Nack — confirmações manuais | https://www.rabbitmq.com/docs/confirms |
 | Automatic Recovery (reconexão automática) | https://www.rabbitmq.com/client-libraries/dotnet-api-guide#recovery |
 | QoS / prefetchCount (`BasicQosAsync`) | https://www.rabbitmq.com/docs/consumer-prefetch |
@@ -116,7 +116,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 🎨 Scalar / OpenAPI
+## 🎨 Scalar e OpenAPI
 
 | Recurso | Link |
 |---|---|
@@ -127,7 +127,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 🏛️ Clean Architecture & DDD
+## 🏛️ Clean Architecture e DDD
 
 | Recurso | Link |
 |---|---|
@@ -144,18 +144,18 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 | Recurso | Link |
 |---|---|
-| Infrastructure & Repository — Microsoft | https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design |
+| Infrastructure e Repository — Microsoft | https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design |
 | Repository Pattern com EF Core | https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application |
-| Generic Repository (prós e contras) | https://www.martinfowler.com/eaaCatalog/repository.html |
+| Generic Repository — prós e contras | https://www.martinfowler.com/eaaCatalog/repository.html |
 
 ---
 
-## 🔧 Service Layer & Application Layer
+## 🔧 Service Layer e Application Layer
 
 | Recurso | Link |
 |---|---|
 | Application Layer com Commands e Handlers | https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/application-layer-commands-handlers |
-| Service Layer (Martin Fowler) | https://www.martinfowler.com/eaaCatalog/serviceLayer.html |
+| Service Layer — Martin Fowler | https://www.martinfowler.com/eaaCatalog/serviceLayer.html |
 | Por que evitar AutoMapper (quando não precisa) | https://jimmybogard.com/automapper-usage-guidelines |
 
 ---
@@ -171,7 +171,7 @@ Links de referência utilizados no desenvolvimento da **Orders API**.
 
 ---
 
-## 🔒 HTTPS & Certificados Dev
+## 🔒 HTTPS e Certificados Dev
 
 | Recurso | Link |
 |---|---|

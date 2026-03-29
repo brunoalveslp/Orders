@@ -1,50 +1,50 @@
 ﻿# Orders API
 
-API REST para gerenciamento de pedidos, construÃ­da com **.NET 10**, seguindo os princÃ­pios de **Clean Architecture** e **DDD (Domain-Driven Design)**.
+API REST para gerenciamento de pedidos, construída com **.NET 10**, seguindo os princípios de **Clean Architecture** e **DDD (Domain-Driven Design)**.
 
-> ðŸ“š Links e documentaÃ§Ã£o de referÃªncia: [RECURSOS.md](./RECURSOS.md)
+> 📚 Links e documentação de referência: [RECURSOS.md](./RECURSOS.md)
 
 ---
 
-## ðŸ“ Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 Orders/
-â”œâ”€â”€ Orders.API/                  # Camada de apresentaÃ§Ã£o (Controllers, Program.cs, Dockerfile)
-â”œâ”€â”€ Orders.Application/          # Camada de aplicaÃ§Ã£o (Services, DTOs, Interfaces, Mappings)
-â”œâ”€â”€ Orders.Domain/               # Camada de domÃ­nio (Entities, Enums, Common)
-â”œâ”€â”€ Orders.Infrastructure/       # Camada de infraestrutura (EF Core, RepositÃ³rios, Migrations)
-â”œâ”€â”€ Orders.Worker/               # Worker Service (consumer RabbitMQ)
-â””â”€â”€ docker-compose.yml
+├── Orders.API/                  # Camada de apresentação (Controllers, Program.cs, Dockerfile)
+├── Orders.Application/          # Camada de aplicação (Services, DTOs, Interfaces, Mappings)
+├── Orders.Domain/               # Camada de domínio (Entities, Enums, Common)
+├── Orders.Infrastructure/       # Camada de infraestrutura (EF Core, Repositórios, Migrations)
+├── Orders.Worker/               # Worker Service (consumer RabbitMQ)
+└── docker-compose.yml
 ```
 
 ### Responsabilidade de cada camada
 
 | Camada | Responsabilidade |
 |---|---|
-| `Orders.Domain` | Entidades, regras de negÃ³cio, enums e objetos de valor |
-| `Orders.Application` | OrquestraÃ§Ã£o, DTOs, interfaces e mapeamentos |
-| `Orders.Infrastructure` | PersistÃªncia com EF Core, repositÃ³rios e migrations |
-| `Orders.API` | Controllers, configuraÃ§Ã£o do pipeline HTTP e documentaÃ§Ã£o |
+| `Orders.Domain` | Entidades, regras de negócio, enums e objetos de valor |
+| `Orders.Application` | Orquestração, DTOs, interfaces e mapeamentos |
+| `Orders.Infrastructure` | Persistência com EF Core, repositórios e migrations |
+| `Orders.API` | Controllers, configuração do pipeline HTTP e documentação |
 
 ---
 
-## ðŸ›ï¸ PadrÃµes Arquiteturais
+## 🏛️ Padrões Arquiteturais
 
-| PadrÃ£o | Onde | DescriÃ§Ã£o |
+| Padrão | Onde | Descrição |
 |---|---|---|
-| **Repository Pattern** | `Orders.Infrastructure` | Abstrai o acesso ao banco de dados â€” `IOrderRepository` / `OrderRepository` |
-| **Service Layer** | `Orders.Application` | Orquestra regras de negÃ³cio sem acoplamento Ã  infraestrutura |
-| **Result Pattern** | `Orders.Domain/Common` | `Result<T>` encapsula sucesso/falha sem lanÃ§ar exceÃ§Ãµes |
+| **Repository Pattern** | `Orders.Infrastructure` | Abstrai o acesso ao banco de dados — `IOrderRepository` / `OrderRepository` |
+| **Service Layer** | `Orders.Application` | Orquestra regras de negócio sem acoplamento à infraestrutura |
+| **Result Pattern** | `Orders.Domain/Common` | `Result<T>` encapsula sucesso/falha sem lançar exceções |
 | **Null Object** | `Orders.Worker` | `NullMessageBus` satisfaz `IMessageBus` no Worker sem publicar mensagens |
-| **Thin Event** | `Orders.Application/Events` | `OrderCreatedEvent(Guid Id)` â€” evento mÃ­nimo, consumer busca os dados no banco |
-| **Extension Method Mapping** | `Orders.Application/Mappings` | `Order.ToResponse()` converte entidade em DTO sem dependÃªncia de library externa |
+| **Thin Event** | `Orders.Application/Events` | `OrderCreatedEvent(Guid Id)` — evento mínimo, consumer busca os dados no banco |
+| **Extension Method Mapping** | `Orders.Application/Mappings` | `Order.ToResponse()` converte entidade em DTO sem dependência de library externa |
 
 ---
 
-## ðŸš€ Como executar
+## 🚀 Como executar
 
-### PrÃ©-requisitos
+### Pré-requisitos
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
@@ -54,35 +54,35 @@ Orders/
 docker compose up --build
 ```
 
-A API estarÃ¡ disponÃ­vel em:
+A API estará disponível em:
 
-| URL | DescriÃ§Ã£o |
+| URL | Descrição |
 |---|---|
-| `http://localhost:8080` | Redireciona para a documentaÃ§Ã£o |
-| `http://localhost:8080/scalar/v1` | DocumentaÃ§Ã£o interativa (Scalar UI) |
-| `https://localhost:8081/scalar/v1` | DocumentaÃ§Ã£o interativa via HTTPS |
+| `http://localhost:8080` | Redireciona para a documentação |
+| `http://localhost:8080/scalar/v1` | Documentação interativa (Scalar UI) |
+| `https://localhost:8081/scalar/v1` | Documentação interativa via HTTPS |
 | `http://localhost:8080/order` | Endpoints da API |
 | `http://localhost:15672` | RabbitMQ Management UI (guest / guest) |
 
-> As migrations do banco de dados sÃ£o aplicadas automaticamente no startup da API.
+> As migrations do banco de dados são aplicadas automaticamente no startup da API.
 
 ---
 
-## ðŸ“‹ Endpoints
+## 📋 Endpoints
 
-| MÃ©todo | Rota | DescriÃ§Ã£o | Resposta |
+| Método | Rota | Descrição | Resposta |
 |---|---|---|---|
-| `GET` | `/order` | Lista todos os pedidos | `200 OK` Â· `404 Not Found` |
-| `GET` | `/order/{id}` | Busca pedido por ID | `200 OK` Â· `404 Not Found` |
-| `POST` | `/order` | Cria um novo pedido | `201 Created` Â· `400 Bad Request` |
+| `GET` | `/order` | Lista todos os pedidos | `200 OK` · `404 Not Found` |
+| `GET` | `/order/{id}` | Busca pedido por ID | `200 OK` · `404 Not Found` |
+| `POST` | `/order` | Cria um novo pedido | `201 Created` · `400 Bad Request` |
 
-### Exemplo de criaÃ§Ã£o de pedido
+### Exemplo de criação de pedido
 
 **Request:**
 ```json
 POST /order
 {
-  "nomeCliente": "JoÃ£o Silva",
+  "nomeCliente": "João Silva",
   "descricao": "Pedido de notebook",
   "valor": 4500.00
 }
@@ -92,7 +92,7 @@ POST /order
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "nomeCliente": "JoÃ£o Silva",
+  "nomeCliente": "João Silva",
   "descricao": "Pedido de notebook",
   "valor": 4500.00,
   "status": "Pendente"
@@ -101,9 +101,9 @@ POST /order
 
 ---
 
-## ðŸ› ï¸ Tecnologias
+## 🛠️ Tecnologias
 
-| Tecnologia | VersÃ£o | Uso |
+| Tecnologia | Versão | Uso |
 |---|---|---|
 | .NET | 10 | Framework principal |
 | ASP.NET Core | 10 | API REST |
@@ -111,116 +111,116 @@ POST /order
 | PostgreSQL | 15 | Banco de dados |
 | RabbitMQ | 3 | Mensageria (publish/subscribe) |
 | RabbitMQ.Client | 7.2.1 | Cliente .NET para RabbitMQ |
-| Scalar | 2.6.0 | DocumentaÃ§Ã£o interativa da API |
-| Docker / Docker Compose | â€” | ContainerizaÃ§Ã£o e orquestraÃ§Ã£o |
+| Scalar | 2.6.0 | Documentação interativa da API |
+| Docker / Docker Compose | — | Containerização e orquestração |
 
 ---
 
-## ðŸ‡ Mensageria â€” RabbitMQ
+## 🐇 Mensageria — RabbitMQ
 
 ### Fluxo de mensagens
 
 ```
 POST /order (API)
-    â†’ salva no banco
-    â†’ publica OrderCreatedEvent { Id } na fila "orders"
+    → salva no banco
+    → publica OrderCreatedEvent { Id } na fila "orders"
 
 Worker (consumer)
-    â†’ recebe { Id }
-    â†’ busca Order no banco
-    â†’ order.Process()  â†’  Status: Pendente â†’ Processado
-    â†’ salva no banco
-    â†’ BasicAck âœ…  (ou BasicNack âŒ em caso de erro)
+    → recebe { Id }
+    → busca Order no banco
+    → order.Process()  →  Status: Pendente → Processado
+    → salva no banco
+    → BasicAck ✅  (ou BasicNack ❌ em caso de erro)
 ```
 
 ### Publish (Orders.Infrastructure)
 
 | Classe | Responsabilidade |
 |---|---|
-| `MessagingService` | Implementa `IMessageBus` â€” conecta e publica mensagens no RabbitMQ |
-| `MessagingExtentions` | Extension method `AddMessaging` â€” registra `IMessageBus` como singleton no DI |
-| `MessagingInitializer` | `BackgroundService` â€” forÃ§a a criaÃ§Ã£o da conexÃ£o no startup (fail-fast) |
-| `NullMessageBus` (Worker) | ImplementaÃ§Ã£o vazia de `IMessageBus` â€” usada no Worker que nÃ£o publica |
+| `MessagingService` | Implementa `IMessageBus` — conecta e publica mensagens no RabbitMQ |
+| `MessagingExtentions` | Extension method `AddMessaging` — registra `IMessageBus` como singleton no DI |
+| `MessagingInitializer` | `BackgroundService` — força a criação da conexão no startup (fail-fast) |
+| `NullMessageBus` (Worker) | Implementação vazia de `IMessageBus` — usada no Worker que não publica |
 
 ### Consume (Orders.Worker)
 
-| Conceito | ImplementaÃ§Ã£o |
+| Conceito | Implementação |
 |---|---|
-| `AsyncEventingBasicConsumer` | Consumer event-driven â€” recebe mensagens sem polling |
-| `autoAck: false` | ConfirmaÃ§Ã£o manual â€” garante que mensagem sÃ³ Ã© removida apÃ³s processamento |
-| `BasicAck` | Confirma processamento com sucesso â€” mensagem removida da fila |
-| `BasicNack requeue: false` | Descarta mensagem invÃ¡lida ou nÃ£o processÃ¡vel |
-| `BasicNack requeue: true` | Devolve mensagem Ã  fila em caso de erro inesperado |
+| `AsyncEventingBasicConsumer` | Consumer event-driven — recebe mensagens sem polling |
+| `autoAck: false` | Confirmação manual — garante que mensagem só é removida após processamento |
+| `BasicAck` | Confirma processamento com sucesso — mensagem removida da fila |
+| `BasicNack requeue: false` | Descarta mensagem inválida ou não processável |
+| `BasicNack requeue: true` | Devolve mensagem à fila em caso de erro inesperado |
 | `prefetchCount: 1` | Worker processa 1 mensagem por vez (QoS) |
-| `IServiceScopeFactory` | Cria escopo DI por mensagem â€” necessÃ¡rio para `DbContext` e serviÃ§os `Scoped` |
+| `IServiceScopeFactory` | Cria escopo DI por mensagem — necessário para `DbContext` e serviços `Scoped` |
 
 ---
 
-## âš™ï¸ Worker Service
+## ⚙️ Worker Service
 
 ### Estrutura do Worker
 
 ```
 Orders.Worker/
-â”œâ”€â”€ Worker.cs                    # BackgroundService â€” consumer RabbitMQ
-â”œâ”€â”€ Program.cs                   # ConfiguraÃ§Ã£o de DI e host
-â”œâ”€â”€ Dockerfile                   # Multi-stage build para container
-â”œâ”€â”€ appsettings.json             # ConfiguraÃ§Ãµes locais
-â””â”€â”€ Messaging/
-    â””â”€â”€ NullMessageBus.cs        # Null Object Pattern para IMessageBus
+├── Worker.cs                    # BackgroundService — consumer RabbitMQ
+├── Program.cs                   # Configuração de DI e host
+├── Dockerfile                   # Multi-stage build para container
+├── appsettings.json             # Configurações locais
+└── Messaging/
+    └── NullMessageBus.cs        # Null Object Pattern para IMessageBus
 ```
 
 ### Ciclo de vida do Worker
 
-| MÃ©todo | Quando executa | O que faz |
+| Método | Quando executa | O que faz |
 |---|---|---|
 | `StartAsync` | Uma vez ao iniciar | Conecta RabbitMQ, declara fila, configura QoS |
 | `ExecuteAsync` | Continuamente | Registra consumer e aguarda mensagens indefinidamente |
-| `StopAsync` | Uma vez ao encerrar | Fecha canal e conexÃ£o graciosamente |
+| `StopAsync` | Uma vez ao encerrar | Fecha canal e conexão graciosamente |
 
 ---
 
-## ðŸ§ª Testando com Postman
+## 🧪 Testando com Postman
 
-### Importando a coleÃ§Ã£o
+### Importando a coleção
 
 1. Suba o ambiente com `docker compose up --build`
-2. Abra o Postman â†’ **File â†’ Import**
-3. Selecione o arquivo `Orders.postman_collection.json` na raiz do repositÃ³rio
-4. A coleÃ§Ã£o **Orders API** aparecerÃ¡ no painel lateral
+2. Abra o Postman → **File → Import**
+3. Selecione o arquivo `Orders.postman_collection.json` na raiz do repositório
+4. A coleção **Orders API** aparecerá no painel lateral
 
-### VariÃ¡veis de coleÃ§Ã£o
+### Variáveis de coleção
 
-| VariÃ¡vel | Valor padrÃ£o | DescriÃ§Ã£o |
+| Variável | Valor padrão | Descrição |
 |---|---|---|
 | `baseUrl` | `http://localhost:8080` | URL base da API. Troque por `https://localhost:8081` para HTTPS |
 | `orderId` | *(vazio)* | Preenchida automaticamente ao executar `POST /order` |
 
-### Endpoints disponÃ­veis
+### Endpoints disponíveis
 
-| MÃ©todo | Rota | DescriÃ§Ã£o | Retorno |
+| Método | Rota | Descrição | Retorno |
 |---|---|---|---|
-| `GET` | `/order` | Lista todos os pedidos | `200 OK` Â· `404 Not Found` |
-| `GET` | `/order/{{orderId}}` | Busca pedido pelo ID | `200 OK` Â· `404 Not Found` |
-| `POST` | `/order` | Cria um novo pedido | `201 Created` Â· `400 Bad Request` |
+| `GET` | `/order` | Lista todos os pedidos | `200 OK` · `404 Not Found` |
+| `GET` | `/order/{{orderId}}` | Busca pedido pelo ID | `200 OK` · `404 Not Found` |
+| `POST` | `/order` | Cria um novo pedido | `201 Created` · `400 Bad Request` |
 
 ### Fluxo de teste recomendado
 
 ```
-1. POST /order             â†’ cria o pedido (orderId salvo automaticamente)
-2. GET  /order/{{orderId}} â†’ confirma o pedido com status "Pendente"
-3. GET  /order             â†’ lista todos os pedidos
-4. Aguarde ~2s             â†’ Worker processa via RabbitMQ
-5. GET  /order/{{orderId}} â†’ status atualizado para "Processado"
+1. POST /order             → cria o pedido (orderId salvo automaticamente)
+2. GET  /order/{{orderId}} → confirma o pedido com status "Pendente"
+3. GET  /order             → lista todos os pedidos
+4. Aguarde ~2s             → Worker processa via RabbitMQ
+5. GET  /order/{{orderId}} → status atualizado para "Processado"
 ```
 
 ### Testes automatizados no POST /order
 
 O request `POST /order` inclui os seguintes testes Postman integrados:
 
-| Teste | ValidaÃ§Ã£o |
+| Teste | Validação |
 |---|---|
-| `Status 201 Created` | CÃ³digo de resposta Ã© 201 |
-| `Resposta contÃ©m id` | Campo `id` presente e nÃ£o vazio |
-| `Status do pedido Ã© Pendente` | Campo `status` igual a `"Pendente"` |
+| `Status 201 Created` | Código de resposta é 201 |
+| `Resposta contém id` | Campo `id` presente e não vazio |
+| `Status do pedido é Pendente` | Campo `status` igual a `"Pendente"` |
 | `Valor retornado corresponde ao enviado` | Campo `valor` igual ao enviado no body |
